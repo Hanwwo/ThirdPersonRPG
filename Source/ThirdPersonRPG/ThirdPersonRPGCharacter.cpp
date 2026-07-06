@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ThirdPersonRPGCharacter.h"
 #include "Engine/LocalPlayer.h"
@@ -65,6 +65,9 @@ void AThirdPersonRPGCharacter::SetupPlayerInputComponent(UInputComponent* Player
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AThirdPersonRPGCharacter::Look);
+
+		// Interact
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AThirdPersonRPGCharacter::Interact);
 	}
 	else
 	{
@@ -130,4 +133,26 @@ void AThirdPersonRPGCharacter::DoJumpEnd()
 {
 	// signal the character to stop jumping
 	StopJumping();
+}
+
+void AThirdPersonRPGCharacter::Interact() {
+	if (GetController() == nullptr) { 
+		return; 
+	}
+	FVector TraceStart = GetActorLocation();
+	FVector ForwardVector = GetControlRotation().Vector();
+	float TraceRange = 500.0f;
+	FVector TraceEnd = TraceStart + (ForwardVector * TraceRange);
+	FHitResult HitResult;
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this); // 이 프로젝트의 3인칭의 라인트레이스 또한 캐릭터(캡슐) 중앙에서 나가기 때문, 하지만 이 방식의 경우 아래를 바라보면 바닥 인지가 먼저됨
+	bool bHit = GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		TraceStart, 
+		TraceEnd, 
+		ECC_Visibility, 
+		QueryParams);
+	if (bHit && HitResult.GetActor()) { 
+		UE_LOG(LogThirdPersonRPG, Log, TEXT("라인트레이스 감지 성공 -> 대상 오브젝트 : %s"), *HitResult.GetActor()->GetName()); 
+	}
 }

@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -49,6 +49,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MouseLookAction;
 
+	/** Interact Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* InteractAction;
+
 public:
 
 	/** Constructor */
@@ -66,6 +70,9 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	/** 상호작용 키 입력 시 실행 (LineTrace로 사물 인식) */
+	void Interact();
 
 public:
 
