@@ -11,6 +11,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "ThirdPersonRPG.h"
+#include "Interactable.h"
+#include "DrawDebugHelpers.h"
 
 AThirdPersonRPGCharacter::AThirdPersonRPGCharacter()
 {
@@ -152,7 +154,16 @@ void AThirdPersonRPGCharacter::Interact() {
 		TraceEnd, 
 		ECC_Visibility, 
 		QueryParams);
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Green, false, 2.0f, 0, 1.0f);
+
 	if (bHit && HitResult.GetActor()) { 
-		UE_LOG(LogThirdPersonRPG, Log, TEXT("라인트레이스 감지 성공 -> 대상 오브젝트 : %s"), *HitResult.GetActor()->GetName()); 
+		AActor* HitActor = HitResult.GetActor();
+
+		// 맞은 액터가 IInteractable 계약서에 서명했는지 확인
+		if (IInteractable* Interactable = Cast<IInteractable>(HitActor))
+		{
+			// 서명함 -> 걔의 Interact() 실행
+			Interactable->Interact();
+		}
 	}
 }

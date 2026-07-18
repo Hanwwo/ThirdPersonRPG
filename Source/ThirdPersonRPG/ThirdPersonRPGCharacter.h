@@ -53,6 +53,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* InteractAction;
 
+	
+
 public:
 
 	/** Constructor */
