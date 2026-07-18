@@ -12,7 +12,7 @@
 #include "InputActionValue.h"
 #include "ThirdPersonRPG.h"
 #include "Interactable.h"
-#include "DrawDebugHelpers.h"
+#include "Components/SphereComponent.h"
 
 AThirdPersonRPGCharacter::AThirdPersonRPGCharacter()
 {
@@ -50,6 +50,19 @@ AThirdPersonRPGCharacter::AThirdPersonRPGCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	// 상호작용 대상 감지용 구체 생성
+	InteractionSphere = CreateDefaultSubobject <USphereComponent>(TEXT("InteractionSphere"));
+
+	// 캐릭터 몸(캡슐)에 붙이기
+	InteractionSphere->SetupAttachment(RootComponent);
+
+	// 감지 범위(반지름) 설정 (단위 : cm)
+	InteractionSphere->SetSphereRadius(200.0f);
+
+	// 구체의 오버랩 이벤트에 함수 등록 (이름표 걸어주기)
+	InteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &AThirdPersonRPGCharacter::OnSphereBeginOverlap);
+	InteractionSphere->OnComponentEndOverlap.AddDynamic(this, &AThirdPersonRPGCharacter::OnSphereEndOverlap);
 }
 
 void AThirdPersonRPGCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -137,33 +150,41 @@ void AThirdPersonRPGCharacter::DoJumpEnd()
 	StopJumping();
 }
 
-void AThirdPersonRPGCharacter::Interact() {
-	if (GetController() == nullptr) { 
-		return; 
+void AThirdPersonRPGCharacter::Interact() 
+{
+	// 1. 감지 목록 비어 있다면 상호작용할 대상이 없는 것
+	if (OverlappingInteractables.Num() == 0)
+	{
+		return;
 	}
-	FVector TraceStart = GetActorLocation();
-	FVector ForwardVector = GetControlRotation().Vector();
-	float TraceRange = 500.0f;
-	FVector TraceEnd = TraceStart + (ForwardVector * TraceRange);
-	FHitResult HitResult;
-	FCollisionQueryParams QueryParams;
-	QueryParams.AddIgnoredActor(this); // 이 프로젝트의 3인칭의 라인트레이스 또한 캐릭터(캡슐) 중앙에서 나가기 때문, 하지만 이 방식의 경우 아래를 바라보면 바닥 인지가 먼저됨
-	bool bHit = GetWorld()->LineTraceSingleByChannel(
-		HitResult,
-		TraceStart, 
-		TraceEnd, 
-		ECC_Visibility, 
-		QueryParams);
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Green, false, 2.0f, 0, 1.0f);
 
-	if (bHit && HitResult.GetActor()) { 
-		AActor* HitActor = HitResult.GetActor();
+	// 2. 목록 중 첫 번째 대상 꺼내기
+	AActor* TargetActor = OverlappingInteractables[0];
 
-		// 맞은 액터가 IInteractable 계약서에 서명했는지 확인
-		if (IInteractable* Interactable = Cast<IInteractable>(HitActor))
-		{
-			// 서명함 -> 걔의 Interact() 실행
-			Interactable->Interact();
-		}
+	// 3. 계약서 서명한 액터인지(Interact()를 구현한 액터인지) 확인 후 실행
+	if (IInteractable* Interactable = Cast<IInteractable>(TargetActor))
+	{
+		Interactable->Interact();
+	}
+}
+
+void AThirdPersonRPGCharacter::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	// 감지 범위 안에 들어온 대상이 IInteractable 계약서에 서명했는지 확인
+	if (OtherActor && Cast<IInteractable>(OtherActor))
+	{
+		OverlappingInteractables.AddUnique(OtherActor);	// 명단에 추가
+		UE_LOG(LogThirdPersonRPG, Log, TEXT("Enter -> %s"), *OtherActor->GetName());
+	}
+}
+
+void AThirdPersonRPGCharacter::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor)
+	{
+		OverlappingInteractables.Remove(OtherActor);	// 명단에서 제거
+		UE_LOG(LogThirdPersonRPG, Log, TEXT("Exit -> %s"), *OtherActor->GetName());
 	}
 }

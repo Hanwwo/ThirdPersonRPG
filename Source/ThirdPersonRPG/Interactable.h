@@ -23,6 +23,6 @@ class THIRDPERSONRPG_API IInteractable
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	
-	// 상호작용 당했을 때, 실행될 계약 함수 (알맹이는 어짜피 각 액터가 채우기 때문에 =0 을 붙여줌. 순수 가상 함수)
+	// 상호작용 될 때, 실행될 계약 함수 (알맹이는 어짜피 각 액터가 채우기 때문에 =0 을 붙여줌. 순수 가상 함수)
 	virtual void Interact() = 0;
 };
