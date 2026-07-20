@@ -75,7 +75,7 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
-	/** 상호작용 키 입력 시 실행 (LineTrace로 사물 인식) */
+	/** 상호작용 키 입력 시 실행 (구체 오버랩으로 사물 인식) */
 	void Interact();
 
 	/** 구체 감지 범위 안 상호작용 대상 목록 */

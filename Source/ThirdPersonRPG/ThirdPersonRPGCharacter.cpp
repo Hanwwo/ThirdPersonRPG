@@ -52,13 +52,13 @@ AThirdPersonRPGCharacter::AThirdPersonRPGCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 
 	// 상호작용 대상 감지용 구체 생성
-	InteractionSphere = CreateDefaultSubobject <USphereComponent>(TEXT("InteractionSphere"));
+	InteractionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractionSphere"));
 
 	// 캐릭터 몸(캡슐)에 붙이기
 	InteractionSphere->SetupAttachment(RootComponent);
 
 	// 감지 범위(반지름) 설정 (단위 : cm)
-	InteractionSphere->SetSphereRadius(200.0f);
+	InteractionSphere->SetSphereRadius(100.0f);
 
 	// 구체의 오버랩 이벤트에 함수 등록 (이름표 걸어주기)
 	InteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &AThirdPersonRPGCharacter::OnSphereBeginOverlap);
@@ -164,7 +164,7 @@ void AThirdPersonRPGCharacter::Interact()
 	// 3. 계약서 서명한 액터인지(Interact()를 구현한 액터인지) 확인 후 실행
 	if (IInteractable* Interactable = Cast<IInteractable>(TargetActor))
 	{
-		Interactable->Interact();
+		Interactable->Interact(this);
 	}
 }
 

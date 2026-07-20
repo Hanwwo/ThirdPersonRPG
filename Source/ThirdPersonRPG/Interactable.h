@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -23,6 +23,6 @@ class THIRDPERSONRPG_API IInteractable
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	
-	// »óÈ£ÀÛ¿ë µÉ ¶§, ½ÇÇàµÉ °è¾à ÇÔ¼ö (¾Ë¸ÍÀÌ´Â ¾îÂ¥ÇÇ °¢ ¾×ÅÍ°¡ Ã¤¿ì±â ¶§¹®¿¡ =0 À» ºÙ¿©ÁÜ. ¼ø¼ö °¡»ó ÇÔ¼ö)
-	virtual void Interact() = 0;
+	// ìƒí˜¸ì‘ìš© ë  ë•Œ, ì‹¤í–‰ë  ê³„ì•½ í•¨ìˆ˜ (ì•Œë§¹ì´ëŠ” ì–´ì§œí”¼ ê° ì•¡í„°ê°€ ì±„ìš°ê¸° ë•Œë¬¸ì— =0 ì„ ë¶™ì—¬ì¤Œ. ìˆœìˆ˜ ê°€ìƒ í•¨ìˆ˜)
+	virtual void Interact(AActor* Interactor) = 0;
 };

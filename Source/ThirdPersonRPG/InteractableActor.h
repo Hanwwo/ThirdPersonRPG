@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -21,12 +21,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// ëˆˆì— ë³´ì´ëŠ” ëª¸ (ëª¨ì–‘ì€ ê° ìì‹ì´ ì§€ì •)
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* MeshComp;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	// IInteractable °è¾à ÀÌÇà : ÀÌ ¾×ÅÍ »óÈ£ÀÛ¿ë Á¤ÀÇÇÏ±â
-	virtual void Interact() override;
+	// IInteractable ê³„ì•½ ì´í–‰ : ì´ ì•¡í„° ìƒí˜¸ì‘ìš© ì •ì˜í•˜ê¸°
+	virtual void Interact(AActor* Interactor) override;
 
 };
