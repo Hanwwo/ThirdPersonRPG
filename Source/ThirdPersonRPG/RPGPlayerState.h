@@ -20,7 +20,11 @@ public:
 	void AddGold(int32 Amount);
 
 	// 현재 재화 확인
+	UFUNCTION(BlueprintPure, Category = "Currency")
 	int32 GetGold() const;
+
+	// 구매 시도(재화 충분하면 차감 후 true, 부족하면 false)
+	bool TrySpendGold(int32 Amount);
 
 protected:
 	// 보유 재화
