@@ -4,7 +4,7 @@ Unreal Engine 5.7 / C++ 기반 3인칭 RPG 포트폴리오 프로젝트
 
 ## 개발 문서
 
-**[DevLog 전체 보기 (Notion)]([노션링크](https://cherry-paperback-29a.notion.site/3-388bca612a3d805a9627faca84e2b57b?source=copy_link))**
+**[DevLog 전체 보기 (Notion)] https://cherry-paperback-29a.notion.site/3-388bca612a3d805a9627faca84e2b57b?source=copy_link** 
 
 구현 과정과 설계 판단 근거를 DevLog로 기록하고 있습니다.
 
