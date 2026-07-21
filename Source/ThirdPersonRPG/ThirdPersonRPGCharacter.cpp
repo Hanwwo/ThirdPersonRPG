@@ -158,8 +158,21 @@ void AThirdPersonRPGCharacter::Interact()
 		return;
 	}
 
-	// 2. 목록 중 첫 번째 대상 꺼내기
-	AActor* TargetActor = OverlappingInteractables[0];
+	// 2. 목록 중 가장 가까운 대상 찾기
+	AActor* TargetActor = nullptr;
+	float ClosestDistance = 0.0f;
+
+	for (AActor* Actor : OverlappingInteractables)
+	{
+		float Distance = FVector::Dist(GetActorLocation(), Actor->GetActorLocation());
+
+		// 첫 상호작용 대상 물건이거나, 지금까지 중 가장 가까운 거리라면 후보 교체
+		if (TargetActor == nullptr || Distance < ClosestDistance)
+		{
+			TargetActor = Actor;
+			ClosestDistance = Distance;
+		}
+	}
 
 	// 3. 계약서 서명한 액터인지(Interact()를 구현한 액터인지) 확인 후 실행
 	if (IInteractable* Interactable = Cast<IInteractable>(TargetActor))
