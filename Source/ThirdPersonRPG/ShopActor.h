@@ -20,6 +20,8 @@ public:
 	// 부모의 Interact()를 상점 기능으로 재정의
 	virtual void Interact(AActor* Interactor) override;
 
+	virtual FText GetInteractPrompt() override;
+
 protected:
 	UPROPERTY(EditAnywhere, Category = "Shop")
 	int32 Price = 300;

@@ -12,6 +12,7 @@
 #include "InputActionValue.h"
 #include "ThirdPersonRPG.h"
 #include "Interactable.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/SphereComponent.h"
 
 AThirdPersonRPGCharacter::AThirdPersonRPGCharacter()
@@ -63,6 +64,9 @@ AThirdPersonRPGCharacter::AThirdPersonRPGCharacter()
 	// 구체의 오버랩 이벤트에 함수 등록 (이름표 걸어주기)
 	InteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &AThirdPersonRPGCharacter::OnSphereBeginOverlap);
 	InteractionSphere->OnComponentEndOverlap.AddDynamic(this, &AThirdPersonRPGCharacter::OnSphereEndOverlap);
+
+	// Tick 켜기
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void AThirdPersonRPGCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -150,31 +154,58 @@ void AThirdPersonRPGCharacter::DoJumpEnd()
 	StopJumping();
 }
 
-void AThirdPersonRPGCharacter::Interact() 
+void AThirdPersonRPGCharacter::Tick(float DeltaTime)
 {
-	// 1. 감지 목록 비어 있다면 상호작용할 대상이 없는 것
-	if (OverlappingInteractables.Num() == 0)
-	{
-		return;
-	}
+	Super::Tick(DeltaTime);
 
+	AActor* TargetActor = GetClosestInteractable();
+
+	if (IInteractable* Interactable = Cast<IInteractable>(TargetActor))
+	{
+		FText Prompt = Interactable->GetInteractPrompt();
+		UE_LOG(LogThirdPersonRPG, Log, TEXT("Prompt : %s"), *Prompt.ToString());
+	}
+}
+void AThirdPersonRPGCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// 상호작용 프롬프트의 설계도가 지정되어 있다면
+	if (InteractPromptClass != nullptr)
+	{
+		// 설계도로 실제 위젯 생성
+		InteractPromptWidget = CreateWidget<UUserWidget>(GetWorld(), InteractPromptClass);
+
+		// 생성되었다면 화면에 올리기
+		if (InteractPromptWidget != nullptr)
+		{
+			InteractPromptWidget->AddToViewport();
+		}
+	}
+}
+AActor* AThirdPersonRPGCharacter::GetClosestInteractable()
+{
 	// 2. 목록 중 가장 가까운 대상 찾기
 	AActor* TargetActor = nullptr;
 	float ClosestDistance = 0.0f;
-
 	for (AActor* Actor : OverlappingInteractables)
 	{
 		float Distance = FVector::Dist(GetActorLocation(), Actor->GetActorLocation());
-
 		// 첫 상호작용 대상 물건이거나, 지금까지 중 가장 가까운 거리라면 후보 교체
 		if (TargetActor == nullptr || Distance < ClosestDistance)
 		{
 			TargetActor = Actor;
 			ClosestDistance = Distance;
 		}
-	}
+	} return TargetActor;
+}
+void AThirdPersonRPGCharacter::Interact() 
+{
+	
+	// 1. 가장 가까운 대상 찾기
+	AActor* TargetActor = GetClosestInteractable();
 
-	// 3. 계약서 서명한 액터인지(Interact()를 구현한 액터인지) 확인 후 실행
+	// 2. 계약서 서명한 액터인지(Interact()를 구현한 액터인지) 확인 후 실행
 	if (IInteractable* Interactable = Cast<IInteractable>(TargetActor))
 	{
 		Interactable->Interact(this);

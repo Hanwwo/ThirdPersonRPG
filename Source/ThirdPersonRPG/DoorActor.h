@@ -20,6 +20,8 @@ public:
 	// 부모의 Interact()를 새로이 문 기능으로 작성하겠다는 뜻
 	virtual void Interact(AActor* Interactor) override;
 
+	virtual FText GetInteractPrompt() override;
+
 protected:
 	// 회전축 (경첩) - 이걸 돌리면 여기에 매단 문이 열림
 	UPROPERTY(VisibleAnywhere)

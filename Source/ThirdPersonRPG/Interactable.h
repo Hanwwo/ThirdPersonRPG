@@ -25,4 +25,7 @@ public:
 	
 	// 상호작용 될 때, 실행될 계약 함수 (알맹이는 어짜피 각 액터가 채우기 때문에 =0 을 붙여줌. 순수 가상 함수)
 	virtual void Interact(AActor* Interactor) = 0;
+
+	// 프롬프트에 띄울 글씨 가져오기 (상호작용 가능 대상이 무엇인지 화면에 표시)
+	virtual FText GetInteractPrompt() = 0;
 };

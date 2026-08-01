@@ -21,6 +21,8 @@ public:
 	// 부모의 Interact()를 상자 기능으로 재정의
 	virtual void Interact(AActor* Interactor) override;
 
+	virtual FText GetInteractPrompt() override;
+
 	
 protected:
 	// 상자의 열림 유무

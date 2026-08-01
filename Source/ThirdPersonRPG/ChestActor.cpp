@@ -42,3 +42,7 @@ void AChestActor::Interact(AActor* Interactor)
 	UE_LOG(LogThirdPersonRPG, Log, TEXT("Chest Opened -> %s"), *GetName());
 }
 
+FText AChestActor::GetInteractPrompt()
+{
+	return FText::FromString(TEXT("열기"));
+}

@@ -32,4 +32,6 @@ public:
 	// IInteractable 계약 이행 : 이 액터 상호작용 정의하기
 	virtual void Interact(AActor* Interactor) override;
 
+	virtual FText GetInteractPrompt() override;
+
 };

@@ -37,3 +37,8 @@ void AShopActor::Interact(AActor* Interactor)
 
 	UE_LOG(LogThirdPersonRPG, Log, TEXT("Purchase Success"));
 }
+
+FText AShopActor::GetInteractPrompt()
+{
+	return FText::FromString(TEXT("상점"));
+}

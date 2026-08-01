@@ -78,6 +78,15 @@ protected:
 	/** 상호작용 키 입력 시 실행 (구체 오버랩으로 사물 인식) */
 	void Interact();
 
+	// Tick은 매 프레임 계속
+	virtual void Tick(float DeltaTime) override;
+
+	// BeginPlay는 시작할 때 한번만
+	virtual void BeginPlay() override;
+
+	/** 오버랩 목록 중 가장 가까운 대상 반환 */
+	AActor* GetClosestInteractable();
+
 	/** 구체 감지 범위 안 상호작용 대상 목록 */
 	UPROPERTY()
 	TArray<AActor*> OverlappingInteractables;
@@ -91,6 +100,14 @@ protected:
 	UFUNCTION()
 	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	/** 화면에 띄울 상호작용 프롬프트 위젯 설계도 */
+	UPROPERTY(EditAnywhere, Category = "Interaction")
+	TSubclassOf<class UUserWidget> InteractPromptClass;
+
+	/** 만들어진 프롬프트 위젯 */
+	UPROPERTY()
+	class UUserWidget* InteractPromptWidget;
 
 public:
 

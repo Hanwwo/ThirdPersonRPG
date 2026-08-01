@@ -30,3 +30,8 @@ void ADoorActor::Interact(AActor* Interactor)
 	SetActorRotation(FRotator(0.0f, 90.0f, 0.0f));
 }
 
+FText ADoorActor::GetInteractPrompt()
+{
+	return FText::FromString(TEXT("열기"));
+}
+

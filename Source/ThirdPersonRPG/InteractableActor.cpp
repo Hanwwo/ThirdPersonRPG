@@ -43,3 +43,7 @@ void AInteractableActor::Interact(AActor* Interactor)
 	
 }
 
+FText AInteractableActor::GetInteractPrompt()
+{
+	return FText::FromString(TEXT("상호작용"));
+}
