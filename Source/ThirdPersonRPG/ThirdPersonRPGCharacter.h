@@ -107,7 +107,7 @@ protected:
 
 	/** 만들어진 프롬프트 위젯 */
 	UPROPERTY()
-	class UUserWidget* InteractPromptWidget;
+	class UInteractPromptWidget* InteractPromptWidget;
 
 public:
 

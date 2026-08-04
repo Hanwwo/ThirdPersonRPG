@@ -14,6 +14,7 @@
 #include "Interactable.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/SphereComponent.h"
+#include "InteractPromptWidget.h"
 
 AThirdPersonRPGCharacter::AThirdPersonRPGCharacter()
 {
@@ -162,8 +163,18 @@ void AThirdPersonRPGCharacter::Tick(float DeltaTime)
 
 	if (IInteractable* Interactable = Cast<IInteractable>(TargetActor))
 	{
+		// 대상이 있음 -> 글씨 보이게
 		FText Prompt = Interactable->GetInteractPrompt();
-		UE_LOG(LogThirdPersonRPG, Log, TEXT("Prompt : %s"), *Prompt.ToString());
+		if (InteractPromptWidget != nullptr)
+		{
+			InteractPromptWidget->SetPromptText(Prompt);
+			InteractPromptWidget->SetVisibility(ESlateVisibility::Visible); // 보이게
+		}
+	}
+	else
+	{
+		// 대상이 없음 -> 글씨 안보이게
+		InteractPromptWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 void AThirdPersonRPGCharacter::BeginPlay()
@@ -174,12 +185,13 @@ void AThirdPersonRPGCharacter::BeginPlay()
 	if (InteractPromptClass != nullptr)
 	{
 		// 설계도로 실제 위젯 생성
-		InteractPromptWidget = CreateWidget<UUserWidget>(GetWorld(), InteractPromptClass);
+		InteractPromptWidget = CreateWidget<UInteractPromptWidget>(GetWorld(), InteractPromptClass);
 
 		// 생성되었다면 화면에 올리기
 		if (InteractPromptWidget != nullptr)
 		{
 			InteractPromptWidget->AddToViewport();
+			InteractPromptWidget->SetVisibility(ESlateVisibility(ESlateVisibility::Hidden));
 		}
 	}
 }
