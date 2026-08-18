@@ -22,8 +22,13 @@ public:
 
 	virtual FText GetInteractPrompt() override;
 
+	// 매 프레임 문을 목표 각도로 회전
+	virtual void Tick(float DeltaTime) override;
+
 protected:
 	// 회전축 (경첩) - 이걸 돌리면 여기에 매단 문이 열림
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* DoorPivot;
+	UPROPERTY(VisibleAnywhere)
+	bool bDoorOpen = false;
 };
