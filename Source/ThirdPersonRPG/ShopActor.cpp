@@ -8,8 +8,7 @@
 
 AShopActor::AShopActor()
 {
-	// 상점 모양으로 : 세로로 길게 (임시)
-	MeshComp->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.5f));
+
 }
 
 void AShopActor::Interact(AActor* Interactor)

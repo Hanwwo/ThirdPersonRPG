@@ -26,9 +26,16 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
+	// BeginPlay는 시작할 때 한번만
+	virtual void BeginPlay() override;
+
 	// 회전축 (경첩) - 이걸 돌리면 여기에 매단 문이 열림
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* DoorPivot;
+
 	UPROPERTY(VisibleAnywhere)
 	bool bDoorOpen = false;
+
+	FRotator ClosedRotation;
+	
 };

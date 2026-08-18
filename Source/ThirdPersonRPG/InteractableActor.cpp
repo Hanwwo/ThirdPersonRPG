@@ -14,13 +14,6 @@ AInteractableActor::AInteractableActor()
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	RootComponent = MeshComp;
-
-	// 테스트용 기본 모양 (추후 각 자식들의 기능에 맞게 실제 에셋으로 교체 예정)
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeMesh(TEXT("/Engine/BasicShapes/Cube.Cube"));
-	if (CubeMesh.Succeeded())
-	{
-		MeshComp->SetStaticMesh(CubeMesh.Object);
-	}
 }
 
 // Called when the game starts or when spawned

@@ -17,14 +17,15 @@ ADoorActor::ADoorActor()
 
 	// 큐브(임시)를 경첩의 자식으로 매달기
 	MeshComp->SetupAttachment(DoorPivot);
-
-	// 큐브(임시)를 문 모양으로
-	MeshComp->SetRelativeScale3D(FVector(0.1f, 1.0f, 2.0f));
-
-	// 큐브를 옆으로 절반만큼 밀어, 경첩이 큐브 가장자리에 오게 만들기
-	MeshComp->SetRelativeLocation(FVector(0.0f, 50.0f, 0.0f));
 }
 
+void ADoorActor::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// 레벨에 배치된 각도를 기억해 닫힘 상태로 유지시키기
+	ClosedRotation = GetActorRotation();
+}
 void ADoorActor::Interact(AActor* Interactor)
 {
 	Super::Interact(Interactor);  // 부모 함수 사용하기
@@ -37,11 +38,11 @@ void ADoorActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	// 상태에 따라 목표 각도 설정 (열림, 닫힘)
-	FRotator TargetRotation = FRotator(0.0f, 0.0f, 0.0f);
+	FRotator TargetRotation = ClosedRotation;
 	
 	if (bDoorOpen)
 	{
-		TargetRotation = FRotator(0.0f, 90.0f, 0.0f);
+		TargetRotation = ClosedRotation + FRotator(0.0f, -90.0f, 0.0f);
 	}
 
 	// 현재 각도에서 목표 각도로

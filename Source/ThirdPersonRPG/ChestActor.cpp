@@ -9,8 +9,6 @@
 
 AChestActor::AChestActor()
 {
-	// 상자 모양으로 : 납작하게
-	MeshComp->SetRelativeScale3D(FVector(1.0f, 1.0f, 0.6f));
 
 }
 
