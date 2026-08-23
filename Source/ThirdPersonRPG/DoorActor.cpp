@@ -4,6 +4,7 @@
 #include "DoorActor.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "ThirdPersonRPG.h"
 
 
 
@@ -30,6 +31,28 @@ void ADoorActor::Interact(AActor* Interactor)
 {
 	Super::Interact(Interactor);  // 부모 함수 사용하기
 
+
+	// 닫힌 문을 열 때만 방향을 새로 정하기
+	if (bDoorOpen == false && Interactor != nullptr)
+	{
+		// 문에서 상호작용한 대상을 향하는 방향
+		FVector ToInteractor = Interactor->GetActorLocation() - GetActorLocation();
+
+		// 문의 정면과 비교해 상호작용한 대상이 어느 쪽인지 판단
+		// 액터의 Y축 방향과 액터에서 캐릭터를 향하는 방향의 두 방향이 이루는 각이 90도보다 좁으면 양수, 넓으면 음수
+		float Dot = FVector::DotProduct(GetActorRightVector(), ToInteractor);
+
+		// 대상의 반대쪽으로 열리도록 각도 부호 결정하기
+		if (Dot > 0.0f)
+		{
+			OpenAngle = -90.0f;
+		}
+		else
+		{
+			OpenAngle = 90.0f;
+		}
+	}
+
 	bDoorOpen = !bDoorOpen;
 }
 
@@ -42,7 +65,7 @@ void ADoorActor::Tick(float DeltaTime)
 	
 	if (bDoorOpen)
 	{
-		TargetRotation = ClosedRotation + FRotator(0.0f, -90.0f, 0.0f);
+		TargetRotation = ClosedRotation + FRotator(0.0f, OpenAngle, 0.0f);
 	}
 
 	// 현재 각도에서 목표 각도로

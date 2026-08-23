@@ -36,6 +36,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	bool bDoorOpen = false;
 
+	// 문이 열릴 각도 (부호가 열리는 방향 결정할거임)
+	float OpenAngle = 90.0f;
+
 	FRotator ClosedRotation;
 	
 };

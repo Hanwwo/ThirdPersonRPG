@@ -231,7 +231,6 @@ void AThirdPersonRPGCharacter::OnSphereBeginOverlap(UPrimitiveComponent* Overlap
 	if (OtherActor && Cast<IInteractable>(OtherActor))
 	{
 		OverlappingInteractables.AddUnique(OtherActor);	// 명단에 추가
-		UE_LOG(LogThirdPersonRPG, Log, TEXT("Enter -> %s"), *OtherActor->GetName());
 	}
 }
 
@@ -241,6 +240,5 @@ void AThirdPersonRPGCharacter::OnSphereEndOverlap(UPrimitiveComponent* Overlappe
 	if (OtherActor)
 	{
 		OverlappingInteractables.Remove(OtherActor);	// 명단에서 제거
-		UE_LOG(LogThirdPersonRPG, Log, TEXT("Exit -> %s"), *OtherActor->GetName());
 	}
 }
