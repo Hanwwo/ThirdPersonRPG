@@ -3,7 +3,6 @@
 
 #include "InteractableActor.h"
 #include "Components/StaticMeshComponent.h"
-#include "UObject/ConstructorHelpers.h"
 #include "ThirdPersonRPG.h"
 
 // Sets default values
@@ -32,7 +31,7 @@ void AInteractableActor::Tick(float DeltaTime)
 
 void AInteractableActor::Interact(AActor* Interactor)
 {
-	UE_LOG(LogThirdPersonRPG, Log, TEXT("Interact Success ->%s"), *GetName());
+	UE_LOG(LogThirdPersonRPG, Log, TEXT("Interact Called ->%s"), *GetName());
 	
 }
 

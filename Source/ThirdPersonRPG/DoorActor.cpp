@@ -38,7 +38,7 @@ void ADoorActor::Interact(AActor* Interactor)
 		// 문에서 상호작용한 대상을 향하는 방향
 		FVector ToInteractor = Interactor->GetActorLocation() - GetActorLocation();
 
-		// 문의 정면과 비교해 상호작용한 대상이 어느 쪽인지 판단
+		// 이 문 메시는 Y축이 앞뒤 방향이므로, Y축 기준으로 판단함
 		// 액터의 Y축 방향과 액터에서 캐릭터를 향하는 방향의 두 방향이 이루는 각이 90도보다 좁으면 양수, 넓으면 음수
 		float Dot = FVector::DotProduct(GetActorRightVector(), ToInteractor);
 

@@ -13,6 +13,8 @@ AShopActor::AShopActor()
 
 void AShopActor::Interact(AActor* Interactor)
 {
+	Super::Interact(Interactor);
+
 	// 상호작용한 대상에게서 RPGPlayerState 찾아서 가져가기
 	APawn* InteractorPawn = Cast<APawn>(Interactor);
 	if (InteractorPawn == nullptr)
@@ -26,7 +28,7 @@ void AShopActor::Interact(AActor* Interactor)
 		return;
 	}
 
-	Super::Interact(Interactor);
+	
 
 	// 재화 소비 시도 : 실패 시 거래 취소
 	if (PS->TrySpendGold(Price) == false)
