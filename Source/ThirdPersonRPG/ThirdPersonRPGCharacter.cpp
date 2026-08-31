@@ -174,7 +174,10 @@ void AThirdPersonRPGCharacter::Tick(float DeltaTime)
 	else
 	{
 		// 대상이 없음 -> 글씨 안보이게
-		InteractPromptWidget->SetVisibility(ESlateVisibility::Hidden);
+		if (InteractPromptWidget != nullptr)
+		{
+			InteractPromptWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
 	}
 }
 void AThirdPersonRPGCharacter::BeginPlay()
@@ -202,6 +205,15 @@ AActor* AThirdPersonRPGCharacter::GetClosestInteractable()
 	float ClosestDistance = 0.0f;
 	for (AActor* Actor : OverlappingInteractables)
 	{
+		// Interactable로 캐스트 (Interactable쪽 함수에 접근 가능해짐)
+		IInteractable* Interactable = Cast<IInteractable>(Actor);
+
+		// 인터페이스 구현이 안되어있거나 상호작용할 수 없는 상태라면 스킵하기
+		if (Interactable == nullptr || Interactable->CanInteract() == false)
+		{
+			continue;
+		}
+
 		float Distance = FVector::Dist(GetActorLocation(), Actor->GetActorLocation());
 		// 첫 상호작용 대상 물건이거나, 지금까지 중 가장 가까운 거리라면 후보 교체
 		if (TargetActor == nullptr || Distance < ClosestDistance)

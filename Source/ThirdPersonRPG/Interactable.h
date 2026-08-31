@@ -28,4 +28,7 @@ public:
 
 	// 프롬프트에 띄울 글씨 가져오기 (상호작용 가능 대상이 무엇인지 화면에 표시)
 	virtual FText GetInteractPrompt() = 0;
+
+	// 대상이 지금 상호작용 가능한 상태인지
+	virtual bool CanInteract() { return true; }
 };

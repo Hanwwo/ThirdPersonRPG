@@ -23,6 +23,8 @@ public:
 
 	virtual FText GetInteractPrompt() override;
 
+	virtual bool CanInteract() override;
+
 	
 protected:
 	// 상자의 열림 유무

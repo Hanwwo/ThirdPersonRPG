@@ -19,6 +19,8 @@ void AChestActor::Interact(AActor* Interactor)
 		return;
 	}
 
+	Super::Interact(Interactor);	// 부모의 기능, 공통 로그
+
 	// 상호작용한 대상에게서 RPGPlayerState 찾아서 가져가기
 	APawn* InteractorPawn = Cast<APawn>(Interactor);
 	if (InteractorPawn == nullptr)
@@ -32,8 +34,6 @@ void AChestActor::Interact(AActor* Interactor)
 		return;
 	}
 
-	Super::Interact(Interactor);	// 부모의 기능, 공통 로그
-
 	bIsOpened = true;	// 이제 이 상자는 열린 것
 	PS->AddGold(GoldAmount);	// 재화 추가
 
@@ -43,4 +43,9 @@ void AChestActor::Interact(AActor* Interactor)
 FText AChestActor::GetInteractPrompt()
 {
 	return FText::FromString(TEXT("열기"));
+}
+
+bool AChestActor::CanInteract()
+{
+	return !bIsOpened;
 }
