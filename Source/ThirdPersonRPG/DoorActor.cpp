@@ -16,7 +16,7 @@ ADoorActor::ADoorActor()
 	DoorPivot = CreateDefaultSubobject<USceneComponent>(TEXT("DoorPivot"));
 	RootComponent = DoorPivot;
 
-	// 큐브(임시)를 경첩의 자식으로 매달기
+	// 문 메쉬를 경첩의 자식으로 매달기
 	MeshComp->SetupAttachment(DoorPivot);
 }
 
