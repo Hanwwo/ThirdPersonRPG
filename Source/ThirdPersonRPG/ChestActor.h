@@ -25,6 +25,9 @@ public:
 
 	virtual bool CanInteract() override;
 
+	// 매 프레임 뚜껑을 목표 각도로 회전
+	virtual void Tick(float DeltaTime) override;
+
 	
 protected:
 	// 상자의 열림 유무
@@ -34,6 +37,18 @@ protected:
 	// 이 상자가 줄 재화량
 	UPROPERTY(EditAnywhere, Category = "Chest")
 	int32 GoldAmount = 100;
+
+	// 뚜껑 회전축 (경첩)
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* ChestPivot;
+
+	// 뚜껑 메시
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* ChestComp;
+
+	// 뚜껑이 열릴 각도
+	UPROPERTY(EditDefaultsOnly, Category="Chest")
+	float ChestOpenAngle = 80;
 };
 
 
